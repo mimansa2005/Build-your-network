@@ -1,0 +1,6 @@
+{
+  "name": "Speedo Express - Build Your Network",
+  "description": "Route optimization challenge game for Speedo Express. Connect points, optimize logistics routes, and test efficiency against the Speedo Express engine.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

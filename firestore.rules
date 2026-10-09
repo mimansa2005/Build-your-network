@@ -1,0 +1,82 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global default-deny safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidPlayer(data) {
+      return data.keys().hasAll(['playerId', 'name', 'gameStatus', 'createdAt', 'turns']) &&
+             data.keys().hasOnly(['playerId', 'gameId', 'name', 'email', 'businessOwner', 'instagram', 'instagramId', 'contactNumber', 'gameStatus', 'createdAt', 'completedAt', 'finalScore', 'totalStars', 'maxStars', 'totalTime', 'perfectRounds', 'allRoundsPerfect', 'rewardEligible', 'reward', 'turns']) &&
+             data.playerId is string && data.playerId.size() > 0 && data.playerId.size() <= 128 &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+             data.gameStatus in ['in_progress', 'turn_1_complete', 'turn_2_complete', 'completed'] &&
+             data.createdAt is string && data.createdAt.size() <= 50 &&
+             data.turns is list && data.turns.size() <= 3 &&
+             (!('instagram' in data) || (data.instagram is string && data.instagram.size() <= 100)) &&
+             (!('gameId' in data) || (data.gameId is string && data.gameId.size() <= 128)) &&
+             (!('email' in data) || (data.email is string && data.email.size() <= 150)) &&
+             (!('businessOwner' in data) || data.businessOwner is bool) &&
+             (!('instagramId' in data) || (data.instagramId is string && data.instagramId.size() <= 100)) &&
+             (!('contactNumber' in data) || data.contactNumber == null || (data.contactNumber is string && data.contactNumber.size() <= 30)) &&
+             (!('completedAt' in data) || (data.completedAt is string && data.completedAt.size() <= 50)) &&
+             (!('finalScore' in data) || (data.finalScore is number && data.finalScore >= 0 && data.finalScore <= 100)) &&
+             (!('totalStars' in data) || (data.totalStars is number && data.totalStars >= 0 && data.totalStars <= 100)) &&
+             (!('maxStars' in data) || (data.maxStars is number && data.maxStars >= 0 && data.maxStars <= 100)) &&
+             (!('totalTime' in data) || (data.totalTime is number && data.totalTime >= 0)) &&
+             (!('perfectRounds' in data) || (data.perfectRounds is number && data.perfectRounds >= 0 && data.perfectRounds <= 3)) &&
+             (!('allRoundsPerfect' in data) || data.allRoundsPerfect is bool) &&
+             (!('rewardEligible' in data) || data.rewardEligible is bool) &&
+             (!('reward' in data) || (data.reward is number && data.reward >= 0));
+    }
+
+    function isValidLeaderboardEntry(data) {
+      return data.keys().hasAll(['playerId', 'name', 'totalStars', 'perfectRounds', 'totalTime', 'finalScore', 'rewardEligible', 'completedAt']) &&
+             data.keys().hasOnly(['playerId', 'name', 'totalStars', 'perfectRounds', 'totalTime', 'finalScore', 'rewardEligible', 'completedAt']) &&
+             data.playerId is string && data.playerId.size() > 0 && data.playerId.size() <= 128 &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+             data.totalStars is number && data.totalStars >= 0 && data.totalStars <= 100 &&
+             data.perfectRounds is number && data.perfectRounds >= 0 && data.perfectRounds <= 3 &&
+             data.totalTime is number && data.totalTime >= 0 &&
+             data.finalScore is number && data.finalScore >= 0 && data.finalScore <= 100 &&
+             data.rewardEligible is bool &&
+             data.completedAt is string && data.completedAt.size() <= 50;
+    }
+
+    match /players/{playerId} {
+      allow create: if isValidId(playerId) &&
+                       isValidPlayer(request.resource.data) &&
+                       request.resource.data.playerId == playerId;
+
+      allow update: if isValidId(playerId) &&
+                       isValidPlayer(request.resource.data) &&
+                       request.resource.data.playerId == playerId &&
+                       request.resource.data.createdAt == resource.data.createdAt &&
+                       request.resource.data.name == resource.data.name;
+
+      allow get: if isValidId(playerId);
+      allow list: if false;
+    }
+
+    match /leaderboard/{playerId} {
+      allow read: if true;
+      allow create: if isValidId(playerId) &&
+                       isValidLeaderboardEntry(request.resource.data) &&
+                       request.resource.data.playerId == playerId;
+      allow update: if isValidId(playerId) &&
+                       isValidLeaderboardEntry(request.resource.data) &&
+                       request.resource.data.playerId == playerId &&
+                       request.resource.data.name == resource.data.name;
+      allow delete: if false;
+    }
+
+    match /test/{testId} {
+      allow read: if true;
+    }
+  }
+}

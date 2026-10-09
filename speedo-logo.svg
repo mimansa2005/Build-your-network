@@ -1,0 +1,12 @@
+<svg viewBox="0 0 460 230" width="460" height="230" xmlns="http://www.w3.org/2000/svg">
+  <rect width="460" height="230" fill="#ffffff" rx="16"/>
+  <g transform="skewX(-12) translate(28, 10)">
+    <text x="18" y="94" font-family="Outfit, Arial Black, sans-serif" font-weight="900" font-size="84" letter-spacing="-1" fill="#FF6000">SP</text>
+    <text x="136" y="94" font-family="Outfit, Arial Black, sans-serif" font-weight="900" font-size="84" letter-spacing="-1" fill="#FF6000">E</text>
+    <g transform="translate(242, 0) scale(-1, 1)">
+      <text x="0" y="94" font-family="Outfit, Arial Black, sans-serif" font-weight="900" font-size="84" letter-spacing="-1" fill="#FF6000">E</text>
+    </g>
+    <text x="248" y="94" font-family="Outfit, Arial Black, sans-serif" font-weight="900" font-size="84" letter-spacing="-1" fill="#FF6000">DO</text>
+    <text x="20" y="176" font-family="Outfit, Arial Black, sans-serif" font-weight="900" font-size="80" letter-spacing="0.5" fill="#FF6000">EXPRESS</text>
+  </g>
+</svg>

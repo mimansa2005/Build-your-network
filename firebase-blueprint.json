@@ -1,0 +1,211 @@
+{
+  "entities": {
+    "TurnRecord": {
+      "title": "TurnRecord",
+      "description": "Information about a single completed game turn",
+      "type": "object",
+      "properties": {
+        "turnNumber": {
+          "type": "number",
+          "description": "Turn index (1, 2, or 3)"
+        },
+        "points": {
+          "type": "array",
+          "description": "Coordinates of the 4 generated points"
+        },
+        "playerRoute": {
+          "type": "array",
+          "description": "Indices order chosen by the player"
+        },
+        "optimalRoute": {
+          "type": "array",
+          "description": "Indices order of the optimal route"
+        },
+        "playerDistance": {
+          "type": "number",
+          "description": "Player's total route distance in meters"
+        },
+        "optimalDistance": {
+          "type": "number",
+          "description": "Optimal route total distance in meters"
+        },
+        "difference": {
+          "type": "number",
+          "description": "Difference between player distance and optimal distance in meters"
+        },
+        "efficiency": {
+          "type": "number",
+          "description": "Efficiency percentage (0-100)"
+        },
+        "timeTaken": {
+          "type": "number",
+          "description": "Time taken in seconds to complete the turn"
+        }
+      },
+      "required": [
+        "turnNumber",
+        "points",
+        "playerRoute",
+        "optimalRoute",
+        "playerDistance",
+        "optimalDistance",
+        "difference",
+        "efficiency",
+        "timeTaken"
+      ]
+    },
+    "Player": {
+      "title": "Player",
+      "description": "Speedo Express game session record for a player",
+      "type": "object",
+      "properties": {
+        "playerId": {
+          "type": "string",
+          "description": "Unique identifier for the player session",
+          "maxLength": 128
+        },
+        "gameId": {
+          "type": "string",
+          "description": "Game identifier matching player session ID",
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "description": "Player full name",
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "description": "Player email address",
+          "maxLength": 150
+        },
+        "businessOwner": {
+          "type": "boolean",
+          "description": "Whether the player owns a business or startup"
+        },
+        "instagram": {
+          "type": "string",
+          "description": "Player Instagram handle",
+          "maxLength": 100
+        },
+        "instagramId": {
+          "type": "string",
+          "description": "Player Instagram ID handle",
+          "maxLength": 100
+        },
+        "contactNumber": {
+          "type": "string",
+          "description": "Optional player contact telephone number",
+          "maxLength": 30
+        },
+        "gameStatus": {
+          "type": "string",
+          "description": "Status of the game: in_progress, turn_1_complete, turn_2_complete, completed",
+          "enum": ["in_progress", "turn_1_complete", "turn_2_complete", "completed"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp when the game was started"
+        },
+        "completedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp when the game was completed"
+        },
+        "finalScore": {
+          "type": "number",
+          "description": "Average efficiency across the 3 turns (0-100)"
+        },
+        "turns": {
+          "type": "array",
+          "description": "Array of turn records"
+        }
+      },
+      "required": [
+        "playerId",
+        "name",
+        "gameStatus",
+        "createdAt",
+        "turns"
+      ]
+    },
+    "LeaderboardEntry": {
+      "title": "LeaderboardEntry",
+      "description": "Public leaderboard entry for completed game sessions",
+      "type": "object",
+      "properties": {
+        "playerId": {
+          "type": "string",
+          "description": "Player session identifier",
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "description": "Player display name",
+          "maxLength": 100
+        },
+        "totalStars": {
+          "type": "number",
+          "description": "Total stars scored (0-100)"
+        },
+        "perfectRounds": {
+          "type": "number",
+          "description": "Number of rounds completed with perfect route and time (0-3)"
+        },
+        "totalTime": {
+          "type": "number",
+          "description": "Total time taken in seconds"
+        },
+        "finalScore": {
+          "type": "number",
+          "description": "Final score equal to total stars"
+        },
+        "rewardEligible": {
+          "type": "boolean",
+          "description": "Whether player achieved all 3 perfect rounds to qualify for reward"
+        },
+        "completedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp of game completion"
+        }
+      },
+      "required": [
+        "playerId",
+        "name",
+        "totalStars",
+        "perfectRounds",
+        "totalTime",
+        "finalScore",
+        "rewardEligible",
+        "completedAt"
+      ]
+    },
+    "TestConnection": {
+      "title": "TestConnection",
+      "description": "Heartbeat connection test record",
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "Connection test status"
+        }
+      }
+    }
+  },
+  "firestore": {
+    "/players/{playerId}": {
+      "schema": "Player",
+      "description": "Player registrations and game records for Speedo Express: Build Your Network"
+    },
+    "/leaderboard/{playerId}": {
+      "schema": "LeaderboardEntry",
+      "description": "Public leaderboard records for completed game sessions"
+    },
+    "/test/{testId}": {
+      "schema": "TestConnection",
+      "description": "Connection test endpoint"
+    }
+  }
+}
