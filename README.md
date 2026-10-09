@@ -199,3 +199,11 @@ Every delivery brings the network closer together.
 <p align="center">
   🚚 <strong>SPEEDO EXPRESS — #AbhTensionNhi</strong> 📦
 </p>
+
+## 🚀 Live Deployment
+
+🎮 **Play Build Your Network:** [www.speedoexpress.org/mimansa](https://www.speedoexpress.org/mimansa)
+
+Experience the challenge. Optimize your route. Beat the clock. Earn your stars!
+
+
