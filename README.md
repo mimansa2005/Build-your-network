@@ -2,9 +2,7 @@
 
 ### *Every second counts. Every route matters. Deliver like a legend.*
 
-<p align="center">
-  <img src="speedo-logo.svg" alt="Speedo Express" width="240"/>
-</p>
+
 
 <p align="center">
   <strong>A logistics-inspired, interactive route-optimization challenge built for speed, strategy, and smart decisions.</strong>
